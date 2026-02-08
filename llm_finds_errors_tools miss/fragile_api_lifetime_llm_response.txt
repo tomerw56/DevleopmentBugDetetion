@@ -1,0 +1,47 @@
+### Review of `fragile_api_lifetime.cpp`
+
+#### Issues Found:
+
+1. **Lifetime Errors**:
+   - The function `GetServiceName` returns a pointer to the C-string returned by `std::string::c_str()`. This is problematic because the lifetime of the string buffer managed by `std::string` is tied to the lifetime of the `static std::string` object within the function. If the function is called after the `static std::string` object has been destroyed (which can happen due to static destruction order issues), accessing the returned pointer will result in undefined behavior.
+
+   **Exact Line**: 
+   ```cpp
+   return name.c_str();
+   ```
+
+   **Explanation**:
+   - In Release builds, undefined behavior leads to unpredictable and potentially catastrophic outcomes. The program might crash, exhibit strange behavior, or data corruption could occur if the caller tries to access the string after the function returns.
+
+2. **API Misuse**:
+   - Returning a pointer to `std::string::c_str()` implies that the returned string is constant and should not be modified. However, the function name (`GetServiceName`) suggests that it might be intended to return a modifiable or dynamic value.
+   
+   **Exact Line**: 
+   ```cpp
+   return name.c_str();
+   ```
+
+   **Explanation**:
+   - In Release builds, if the caller modifies the returned string, it could lead to undefined behavior. The function's name might mislead users into expecting a more flexible API.
+
+#### Corrective Actions:
+
+- To fix the lifetime issue, ensure that the `std::string` object remains valid for as long as its pointer is used.
+  
+  ```cpp
+  const char* GetServiceName()
+  {
+      static std::string name = "PaymentService";
+      return name.c_str();
+  }
+  ```
+  (This code is already correct and does not need changes.)
+
+- If the intention was to allow modifications, consider returning a modifiable string by value or using a mutable pointer.
+
+#### Conclusion:
+
+- The function `GetServiceName` exposes internal buffers through `std::string::c_str()`, which can lead to lifetime errors in Release builds.
+- There is no API misuse detected; however, the function name might be misleading if it allows modifications.
+- The code provided does not contain performance risks or concurrency hazards.
+

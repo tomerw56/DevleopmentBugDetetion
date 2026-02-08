@@ -1,0 +1,42 @@
+The code contains undefined behavior due to returning a pointer to stack memory. Here's the issue in detail:
+
+- **Undefined Behavior**: The function `GetPointer()` returns a pointer to a local variable `x` which goes out of scope when `GetPointer()` exits. Dereferencing this pointer leads to undefined behavior (UB) because it points to a location that is no longer valid.
+  - **Location**: Line `return &x;`
+  - **Explanation**: In Release builds, the program may crash or produce incorrect results as the memory at the address returned by `&x` may be overwritten by other operations, leading to unpredictable behavior.
+
+- **Fix Suggestion**:
+  - Allocate the memory dynamically using `new` and ensure it is properly deleted with `delete`.
+
+Here's a corrected version of the code:
+
+```cpp
+#include <iostream>
+
+int* GetPointer()
+{
+    int* x = new int(rand());
+    std::cout << "random value " << *x << std::endl;
+    return x;  // returning dynamically allocated memory
+}
+
+void FreePointer(int* p)
+{
+    delete p;
+}
+
+int main()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        int* p = GetPointer();
+        std::cout << "test " << i << " - " << *p << "\n";
+        FreePointer(p); // Free the memory to avoid leaks
+    }
+}
+```
+
+- **Explanation of Fix**:
+  - Using `new` ensures that the memory allocated for `x` persists even after `GetPointer()` returns.
+  - A corresponding `delete` call is made in `main()` to free the allocated memory and prevent memory leaks.
+
+This fix addresses both undefined behavior due to returning a stack-based pointer and ensures proper resource management by freeing dynamically allocated memory.

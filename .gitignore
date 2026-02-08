@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+/error_sampels/.vs
+/error_sampels/concurreny/x64
+/error_sampels/logic_error/x64
+/error_sampels/memory_safety/x64
+/error_sampels/performance/x64
+/error_sampels/x64
+/error_sampels/api_misuse/x64

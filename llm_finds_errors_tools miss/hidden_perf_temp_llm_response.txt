@@ -1,0 +1,28 @@
+The code provided contains a performance risk that can impact the efficiency of the program, especially in Release builds. Here are the details:
+
+- **Performance Risk**: The function `Transform` returns a large object (`BigObject`), which is copied or moved into the `result` vector during each iteration of the loop in `Process`. In Release builds, this copying or moving operation can lead to significant performance overhead due to the large size of the `BigObject`.
+
+- **Why This Is Dangerous**:
+  - Copying a `BigObject` incurs memory allocation and deallocation costs.
+  - Moving a `BigObject` still involves copying its data, which is not efficient for large objects.
+
+To mitigate this risk, consider using a more performance-friendly approach such as:
+
+```cpp
+void Process(const std::vector<int>& items, std::vector<BigObject>& result)
+{
+    result.clear(); // Clear the existing vector to avoid unnecessary allocations
+
+    for (int item : items)
+    {
+        BigObject obj{};
+        obj.payload[0] = item;
+        result.push_back(std::move(obj)); // Move semantics
+    }
+}
+```
+
+In this revised version, the `result` vector is passed by reference and cleared before being populated. This avoids unnecessary memory allocations and leverages move semantics to improve performance.
+
+However, if modifying the function signature is not an option, consider using a more efficient data structure or algorithm that minimizes object copying or moving.
+

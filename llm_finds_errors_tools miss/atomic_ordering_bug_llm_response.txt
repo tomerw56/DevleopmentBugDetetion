@@ -1,0 +1,66 @@
+### Static Code Review Report for `atomic_ordering_bug.cpp`
+
+#### Summary:
+The code demonstrates undefined behavior due to the misuse of memory ordering in the use of atomic operations. Specifically, it fails to ensure proper synchronization between the producer and consumer threads.
+
+#### Issues Identified:
+
+1. **Undefined Behavior**:
+   - **Line**: `ready.store(true, std::memory_order_relaxed);` (Producer function)
+   - **Issue**: Using `std::memory_order_relaxed` for the store operation on `ready`.
+   - **Danger in Release Builds**: In release builds, compilers and CPUs are free to reorder memory operations for performance optimization. This can lead to the consumer seeing a stale value of `data`, even though `ready` has been set to `true`. Specifically, if the compiler reorders the store operation of `ready` before the store operation of `data`, the consumer might see `ready` as `true` but an old value of `data`.
+
+2. **Lifetime Errors**:
+   - The code does not handle data lifetime issues related to `ready` and `data`. If the program is terminated while either thread is still running, there could be potential issues with resource cleanup or memory leaks.
+
+#### Recommendations:
+
+1. **Correct Memory Ordering**:
+   - Use `std::memory_order_release` for the store operation on `ready` in the `Producer` function to ensure that all writes to `data` are completed before setting `ready`.
+     ```cpp
+     ready.store(true, std::memory_order_release);
+     ```
+   - Ensure that the consumer uses `std::memory_order_acquire` when loading `ready` to correctly synchronize with the producer's memory operations.
+     ```cpp
+     while (!ready.load(std::memory_order_acquire)) {}
+     ```
+
+2. **Ensure Proper Synchronization**:
+   - If the program is terminated unexpectedly, consider using synchronization mechanisms like mutexes or condition variables to ensure that threads can properly clean up resources.
+
+#### Corrected Code:
+
+```cpp
+#include <atomic>
+#include <iostream>
+#include <thread>
+
+std::atomic<bool> ready = false;
+int data = 0;
+
+void Producer()
+{
+    data = 42;
+    ready.store(true, std::memory_order_release); // Use release memory order
+}
+
+void Consumer()
+{
+    while (!ready.load(std::memory_order_acquire)) {} // Use acquire memory order
+    std::cout << data << "\n"; // This will now correctly output the updated value of data
+}
+
+int main() {
+    std::thread prod(Producer);
+    std::thread cons(Consumer);
+
+    prod.join();
+    cons.join();
+
+    return 0;
+}
+```
+
+### Conclusion:
+The original code has undefined behavior due to the misuse of memory ordering in atomic operations. By correcting the memory orders and ensuring proper synchronization, the program will behave correctly in both debug and release builds.
+
