@@ -1,0 +1,65 @@
+[
+  {
+    "file": "../cpp_code/src\\calculator.cpp",
+    "scope": "global",
+    "defines": "Calculator::add(double a, double b)",
+    "code": "double Calculator::add(double a, double b) {\n    return a + b;\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\calculator.cpp\n# Scope: global\n# Defines: Calculator::add(double a, double b)\n\ndouble Calculator::add(double a, double b) {\n    return a + b;\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\calculator.cpp",
+    "scope": "global",
+    "defines": "Calculator::subtract(double a, double b)",
+    "code": "double Calculator::subtract(double a, double b) {\n    return a - b;\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\calculator.cpp\n# Scope: global\n# Defines: Calculator::subtract(double a, double b)\n\ndouble Calculator::subtract(double a, double b) {\n    return a - b;\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\calculator.cpp",
+    "scope": "global",
+    "defines": "Calculator::multiply(double a, double b)",
+    "code": "double Calculator::multiply(double a, double b) {\n    return a * b;\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\calculator.cpp\n# Scope: global\n# Defines: Calculator::multiply(double a, double b)\n\ndouble Calculator::multiply(double a, double b) {\n    return a * b;\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\calculator.cpp",
+    "scope": "global",
+    "defines": "Calculator::divide(double a, double b)",
+    "code": "double Calculator::divide(double a, double b) {\n    // BUG: division by zero not handled\n    return a / b;\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\calculator.cpp\n# Scope: global\n# Defines: Calculator::divide(double a, double b)\n\ndouble Calculator::divide(double a, double b) {\n    // BUG: division by zero not handled\n    return a / b;\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\calculator.h",
+    "scope": "Calculator",
+    "defines": "class Calculator",
+    "code": "class Calculator {\npublic:\n    double add(double a, double b);\n    double subtract(double a, double b);\n    double multiply(double a, double b);\n    double divide(double a, double b);   // BUG: no division by zero handling\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\calculator.h\n# Scope: Calculator\n# Defines: class Calculator\n\nclass Calculator {\npublic:\n    double add(double a, double b);\n    double subtract(double a, double b);\n    double multiply(double a, double b);\n    double divide(double a, double b);   // BUG: no division by zero handling\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\main.cpp",
+    "scope": "global",
+    "defines": "main()",
+    "code": "int main() {\n    Calculator calc;\n    Parser parser;\n\n    std::cout << \"Enter expression (e.g. 3 + 4): \";\n\n    std::string input;\n    std::getline(std::cin, input);\n\n    double lhs = 0.0;\n    double rhs = 0.0;\n    char op = 0;\n\n    if (!parser.parse(input, lhs, op, rhs)) {\n        std::cerr << \"Failed to parse expression\\n\";\n        return 1;\n    }\n\n    double result = 0.0;\n\n    switch (op) {\n    case '+':\n        result = calc.add(lhs, rhs);\n        break;\n    case '-':\n        result = calc.subtract(lhs, rhs);\n        break;\n    case '*':\n        result = calc.multiply(lhs, rhs);\n        break;\n    case '/':\n        result = calc.divide(lhs, rhs);   // BUG: division by zero crashes/inf\n        break;\n    default:\n        std::cerr << \"Unknown operator: \" << op << \"\\n\";\n        return 1;\n    }\n\n    std::cout << \"Result: \" << result << \"\\n\";\n    return 0;\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\main.cpp\n# Scope: global\n# Defines: main()\n\nint main() {\n    Calculator calc;\n    Parser parser;\n\n    std::cout << \"Enter expression (e.g. 3 + 4): \";\n\n    std::string input;\n    std::getline(std::cin, input);\n\n    double lhs = 0.0;\n    double rhs = 0.0;\n    char op = 0;\n\n    if (!parser.parse(input, lhs, op, rhs)) {\n        std::cerr << \"Failed to parse expression\\n\";\n        return 1;\n    }\n\n    double result = 0.0;\n\n    switch (op) {\n    case '+':\n        result = calc.add(lhs, rhs);\n        break;\n    case '-':\n        result = calc.subtract(lhs, rhs);\n        break;\n    case '*':\n        result = calc.multiply(lhs, rhs);\n        break;\n    case '/':\n        result = calc.divide(lhs, rhs);   // BUG: division by zero crashes/inf\n        break;\n    default:\n        std::cerr << \"Unknown operator: \" << op << \"\\n\";\n        return 1;\n    }\n\n    std::cout << \"Result: \" << result << \"\\n\";\n    return 0;\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\parser.cpp",
+    "scope": "global",
+    "defines": "Parser::trim(std::string& s)",
+    "code": "std::string Parser::trim(std::string& s) {\n    size_t start = s.find_first_not_of(\" \");\n    size_t end = s.find_last_not_of(\" \");\n\n    if (start == std::string::npos) {\n        return \"\";\n    }\n    return s.substr(start, end - start + 1);\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\parser.cpp\n# Scope: global\n# Defines: Parser::trim(std::string& s)\n\nstd::string Parser::trim(std::string& s) {\n    size_t start = s.find_first_not_of(\" \");\n    size_t end = s.find_last_not_of(\" \");\n\n    if (start == std::string::npos) {\n        return \"\";\n    }\n    return s.substr(start, end - start + 1);\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\parser.cpp",
+    "scope": "global",
+    "defines": "Parser::parse(const std::string& input, double& lhs, char& op, double& rhs)",
+    "code": "bool Parser::parse(const std::string& input, double& lhs, char& op, double& rhs) {\n    std::string local = input;\n    local = trim(local);\n\n    std::istringstream iss(local);\n\n    // BUG: no validation of format or operator\n    iss >> lhs >> op >> rhs;\n\n    // BUG: ignoring stream state, always returns true\n    return true;\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\parser.cpp\n# Scope: global\n# Defines: Parser::parse(const std::string& input, double& lhs, char& op, double& rhs)\n\nbool Parser::parse(const std::string& input, double& lhs, char& op, double& rhs) {\n    std::string local = input;\n    local = trim(local);\n\n    std::istringstream iss(local);\n\n    // BUG: no validation of format or operator\n    iss >> lhs >> op >> rhs;\n\n    // BUG: ignoring stream state, always returns true\n    return true;\n}\n"
+  },
+  {
+    "file": "../cpp_code/src\\parser.h",
+    "scope": "Parser",
+    "defines": "class Parser",
+    "code": "class Parser {\npublic:\n    // Parses expressions like: \"3 + 4\"\n    bool parse(const std::string& input, double& lhs, char& op, double& rhs);\n\nprivate:\n    // Helper to trim spaces (BUG: not const-correct)\n    std::string trim(std::string& s);\n}",
+    "contextualizedText": "# File: ../cpp_code/src\\parser.h\n# Scope: Parser\n# Defines: class Parser\n\nclass Parser {\npublic:\n    // Parses expressions like: \"3 + 4\"\n    bool parse(const std::string& input, double& lhs, char& op, double& rhs);\n\nprivate:\n    // Helper to trim spaces (BUG: not const-correct)\n    std::string trim(std::string& s);\n}\n"
+  }
+]

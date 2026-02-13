@@ -37,3 +37,6 @@
 /error_sampels/performance/x64
 /error_sampels/x64
 /error_sampels/api_misuse/x64
+/tree_sitter/.idea
+/tree_sitter/.venv
+/tree_sitter/cpp_code/build
