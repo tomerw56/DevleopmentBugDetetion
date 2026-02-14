@@ -1,0 +1,13 @@
+Checks: >
+  clang-diagnostic-*,
+  bugprone-*,
+  performance-*,
+  modernize-*,
+  readability-*,
+  cppcoreguidelines-*
+
+WarningsAsErrors: bugprone-*
+
+HeaderFilterRegex: '^src/*'
+SystemHeaders : false
+FormatStyle: none

@@ -1,0 +1,106 @@
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:3:1: warning: do not use namespace using-directives; use using-declarations instead [google-build-using-namespace]
+    3 | using namespace std;
+      | ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:5:7: warning: invalid case style for class 'my_class' [readability-identifier-naming]
+    5 | class my_class{
+      |       ^~~~~~~~
+      |       MyClass
+    6 | public:
+    7 | int SOME_value;
+    8 | my_class(int x){SOME_value=x;}
+      | ~~~~~~~~
+      | MyClass
+    9 | void DoStuff(){for(int i=0;i<10;i++){cout<<"number:"<<i<<endl;}}
+   10 | };
+   11 | 
+   12 | int  ADD_NUMBERS(int A,int b){return A+b;}
+   13 | 
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |            ~~~~~~~~
+      |            MyClass
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:7:5: warning: invalid case style for member 'SOME_value' [readability-identifier-naming]
+    7 | int SOME_value;
+      |     ^
+note: this fix will not be applied because it overlaps with another fix
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:8:1: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+    8 | my_class(int x){SOME_value=x;}
+      | ^
+      | explicit 
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:8:14: warning: parameter name 'x' is too short, expected at least 3 characters [readability-identifier-length]
+    8 | my_class(int x){SOME_value=x;}
+      |              ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:8:17: warning: 'SOME_value' should be initialized in a member initializer of the constructor [cppcoreguidelines-prefer-member-initializer]
+    8 | my_class(int x){SOME_value=x;}
+      |                 ^~~~~~~~~~~~~
+      |                 : SOME_value(x)
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:9:6: warning: method 'DoStuff' can be made static [readability-convert-member-functions-to-static]
+    9 | void DoStuff(){for(int i=0;i<10;i++){cout<<"number:"<<i<<endl;}}
+      |      ^
+      | static 
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:9:6: warning: invalid case style for function 'DoStuff' [readability-identifier-naming]
+    9 | void DoStuff(){for(int i=0;i<10;i++){cout<<"number:"<<i<<endl;}}
+      |      ^~~~~~~
+      |      doStuff
+   10 | };
+   11 | 
+   12 | int  ADD_NUMBERS(int A,int b){return A+b;}
+   13 | 
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                                ~~~~~~~
+      |                                doStuff
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:9:30: warning: 10 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+    9 | void DoStuff(){for(int i=0;i<10;i++){cout<<"number:"<<i<<endl;}}
+      |                              ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:12:6: warning: use a trailing return type for this function [modernize-use-trailing-return-type]
+   12 | int  ADD_NUMBERS(int A,int b){return A+b;}
+      | ~~~  ^                       
+      | auto                          -> int
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:12:6: warning: invalid case style for function 'ADD_NUMBERS' [readability-identifier-naming]
+   12 | int  ADD_NUMBERS(int A,int b){return A+b;}
+      |      ^~~~~~~~~~~
+      |      addNumbers
+   13 | 
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                                                     ~~~~~~~~~~~
+      |                                                     addNumbers
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:12:22: warning: parameter name 'A' is too short, expected at least 3 characters [readability-identifier-length]
+   12 | int  ADD_NUMBERS(int A,int b){return A+b;}
+      |                      ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:12:28: warning: parameter name 'b' is too short, expected at least 3 characters [readability-identifier-length]
+   12 | int  ADD_NUMBERS(int A,int b){return A+b;}
+      |                            ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:14:5: warning: use a trailing return type for this function [modernize-use-trailing-return-type]
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      | ~~~ ^     
+      | auto       -> int
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:14:21: warning: invalid case style for variable 'OBJ' [readability-identifier-naming]
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                     ^~~    ~~~
+      |                     obj    obj
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:14:25: warning: 5 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                         ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:14:46: warning: invalid case style for variable 'Result' [readability-identifier-naming]
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                                              ^~~~~~
+      |                                              result
+   15 | if(Result>10)cout<<"big"<<endl;else cout<<"small"<<endl;return 0;}
+      |    ~~~~~~
+      |    result
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:14:65: warning: 10 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                                                                 ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:14:68: warning: 20 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   14 | int main(){my_class OBJ(5);OBJ.DoStuff();int Result=ADD_NUMBERS(10,20);
+      |                                                                    ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:15:11: warning: 10 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   15 | if(Result>10)cout<<"big"<<endl;else cout<<"small"<<endl;return 0;}
+      |           ^
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:15:14: warning: statement should be inside braces [readability-braces-around-statements]
+   15 | if(Result>10)cout<<"big"<<endl;else cout<<"small"<<endl;return 0;}
+      |              ^                 
+      |               {                } 
+d:\DevleopmentBugDetetion\linters\clang_tidy\style_fix\bad_code.cpp:15:36: warning: statement should be inside braces [readability-braces-around-statements]
+   15 | if(Result>10)cout<<"big"<<endl;else cout<<"small"<<endl;return 0;}
+      |                                    ^                    
+      |                                     {
