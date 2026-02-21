@@ -42,3 +42,10 @@
 /tree_sitter/cpp_code/build
 /Sanitizers/build
 /Sanitizers/results
+*.dmp
+crash_dumps/windows/crash.ilk
+crash_dumps/windows/crash.pdb
+crash_dumps/windows/global_crash.ilk
+crash_dumps/windows/global_crash.pdb
+crash_dumps/windows/myeasylog.log
+crash_dumps/windows/vc140.pdb
