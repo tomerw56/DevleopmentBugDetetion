@@ -40,3 +40,5 @@
 /tree_sitter/.idea
 /tree_sitter/.venv
 /tree_sitter/cpp_code/build
+/Sanitizers/build
+/Sanitizers/results
